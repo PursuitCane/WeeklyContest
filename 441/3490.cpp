@@ -14,13 +14,12 @@ public:
 
         if (is_limit == false) {
             uint64_t mask = ((uint64_t)mul << 32) + (sum << 16) + n - index;
-            if (is_num && cache.count(mask)) {
-                return cache[mask];
-            }
             if (is_num) {
+                if (cache.count(mask)) return cache[mask];
                 for (int i = 0; i < 10; i++) {
                     ret += dp(upper_s, index + 1, mul * i, sum + i, 0, 1);
                 }
+                cache[mask] = ret;
 
             } else {
                 ret = dp(upper_s, index + 1, mul, sum, 0, 0);            
@@ -29,8 +28,6 @@ public:
                 }
 
             }
-
-            if (is_num) cache[mask] = ret;
         }
 
         if (is_limit) {
@@ -59,3 +56,4 @@ public:
     }
     int beautifulNumbers(int l, int r) { return cal(r) - cal(l - 1); }
 };
+
